@@ -15,6 +15,7 @@
 
 {{#username}}
 Hello, {{.}}
+{{^edit_phase}}
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>
@@ -49,9 +50,47 @@ Hello, {{.}}
     </select>
     <input type="datetime-local" name="birthdate" value="{{now}}"/>
     <input type="number" name="age" placeholder="120"/>
-    <button type="submit">Create Event</button>
+    <button type="submit">Create Dragon</button>
 </form>
+{{/editPhase}}
+{{#edit_phase}}
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<br>
+<br>
 
+<form action="/update-dragon" method="post">
+    <input type="text" name="dragon_name" placeholder="Dragon Name"/>
+    <select name="color" style="display: inline;">
+        <option value="red">Red</option>
+        <option value="blue">Blue</option>
+        <option value="green">Green</option>
+        <option value="yellow">Yellow</option>
+        <option value="white">White</option>
+        <option value="black">Black</option>
+        <option value="gold">Gold</option>
+        <option value="silver">Silver</option>
+        <option value="bronze">Bronze</option>
+        <option value="copper">Copper</option>
+        <option value="mixture">Other</option>
+    </select>
+    <select name="type" style="display: inline;">
+        <option value="leviathan">leviathan</option>
+        <option value="aquatic">aquatic</option>
+        <option value="drake">drake</option>
+        <option value="basilisk">basilisk</option>
+        <option value="fae">fae</option>
+        <option value="hydra">hydra</option>
+        <option value="wyvern">wyvern</option>
+        <option value="anthropomorph">anthropomorph</option>
+        <option value="ouroboros">Ouroboros</option>
+    </select>
+    <input type="datetime-local" name="birthdate" value="{{now}}"/>
+    <input type="number" name="age" placeholder="120"/>
+    <button type="submit">Update Dragon</button>
+</form>
+{{/editPhase}}
 {{/username}}
 
 <ol>
@@ -59,12 +98,14 @@ Hello, {{.}}
     <li>
         {{description}}{{time}}
         {{#isOwner}}
+        {{^edit_phase}}
         <form action="/edit-dragon" method="post" style="display: inline;">
             <button type="submit" style="display: inline;">Edit</button>
             </form>
         <form action="/delete-dragon" method="post" style="display: inline;">
             <button type="submit" style="display: inline;">Delete</button>
         </form>
+        {{/edit_phase}}
         {{/isOwner}}
     </li>
     {{/dragons}}

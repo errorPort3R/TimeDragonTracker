@@ -26,6 +26,8 @@ public class DragonController // not to be confused with the Dragon Orbs
     @Autowired
     DragonRepository dragons;
 
+    private boolean editing = false;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model)
     {
@@ -33,6 +35,7 @@ public class DragonController // not to be confused with the Dragon Orbs
         model.addAttribute("dragons", dragons.findAll());
         model.addAttribute("username", username);
         model.addAttribute("now", LocalDateTime.now());
+        model.addAttribute("edit_phase", editing);
         return "home";
     }
 
@@ -60,12 +63,41 @@ public class DragonController // not to be confused with the Dragon Orbs
     }
 
     @RequestMapping(path = "/create-dragon", method = RequestMethod.POST)
-    public String createEvent(HttpSession session, String name, String color, String type, String birthdate, int age) throws Exception
+    public String createDragon(HttpSession session, String name, String color, String type, String birthdate, int age) throws Exception
     {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
         Dragon dragon = new Dragon(name, color, type, LocalDateTime.parse(birthdate), age, user);
         dragons.save(dragon);
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "/update-dragon", method = RequestMethod.POST)
+    public String updateDragon(HttpSession session, int id, String name, String color, String type, String birthdate, int age) throws Exception
+    {
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        Dragon dragon = new Dragon(id, name, color, type, LocalDateTime.parse(birthdate), age, user);
+        dragons.save(dragon);
+        editing = false;
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "/edit-dragon", method = RequestMethod.POST)
+    public String editDragon(HttpSession session, int id, String name, String color, String type, String birthdate, int age) throws Exception
+    {
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        editing = true;
+        return "redirect:/";
+    }
+
+    @RequestMapping(path = "/delete-dragon", method = RequestMethod.POST)
+    public String deleteDragon(HttpSession session, int id) throws Exception
+    {
+        String username = (String) session.getAttribute("username");
+        User user = users.findByName(username);
+        dragons.delete(id);
         return "redirect:/";
     }
 
