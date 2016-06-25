@@ -8,5 +8,5 @@ import org.springframework.data.repository.CrudRepository;
  */
 public interface DragonRepository extends CrudRepository<Dragon, Integer>
 {
-
+    public Dragon findById(int id);
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="UTF-8">
     <title>Time Travelling Dragon Tracker 301.24.18</title>
 </head>
@@ -15,15 +16,16 @@
 
 {{#username}}
 Hello, {{.}}
-{{^edit_phase}}
 <form action="/logout" method="post">
     <button type="submit">Logout</button>
 </form>
-<br>
+{{/username}}
+{{^edit_phase}}
+{{#username}}
 <br>
 
 <form action="/create-dragon" method="post">
-    <input type="text" name="dragon_name" placeholder="Dragon Name"/>
+    <input type="text" name="name" placeholder="Dragon Name"/>
     <select name="color" style="display: inline;">
         <option value="red" selected>Red</option>
         <option value="blue">Blue</option>
@@ -38,31 +40,66 @@ Hello, {{.}}
         <option value="mixture">Other</option>
     </select>
     <select name="type" style="display: inline;">
-        <option value="leviathan" selected>leviathan</option>
-        <option value="aquatic">aquatic</option>
-        <option value="drake">drake</option>
-        <option value="basilisk">basilisk</option>
-        <option value="fae">fae</option>
-        <option value="hydra">hydra</option>
-        <option value="wyvern">wyvern</option>
-        <option value="anthropomorph">anthropomorph</option>
-        <option value="ouroboros">Ouroboros</option>
+        <option value="Leviathan">Leviathan</option>
+        <option value="Aquatic">Aquatic</option>
+        <option value="Drake">Drake</option>
+        <option value="Basilisk">Basilisk</option>
+        <option value="Fae">Fae</option>
+        <option value="Hydra">Hydra</option>
+        <option value="Wyvern">Wyvern</option>
+        <option value="Anthropomorph">Anthropomorph</option>
+        <option value="Ouroboros">Ouroboros</option>
     </select>
     <input type="datetime-local" name="birthdate" value="{{now}}"/>
     <input type="number" name="age" placeholder="120"/>
     <button type="submit">Create Dragon</button>
 </form>
-{{/editPhase}}
+{{/username}}
+<br>
+<br>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Color</th>
+        <th>Type</th>
+        <th>Age</th>
+
+    </tr>
+    {{#dragons}}
+    <tr>
+        <td>{{name}}</td><td>{{color}}</td><td>{{type}}</td><td>{{age}}</td>
+        {{#isEditable}}
+        {{^edit_phase}}
+        <td>
+            <form action="/edit-dragon" method="post">
+                <input type="hidden" name="id" value="{{id}}"/>
+                <button type="submit" style="display: inline;">Edit</button>
+            </form>
+        </td>
+        <td>
+            <form action="/delete-dragon" method="post">
+                <input type="hidden" name="id" value="{{id}}"/>
+                <button type="submit" style="display: inline;">Delete</button>
+            </form>
+        </td>
+        {{/edit_phase}}
+        {{/isEditable}}
+    </tr>
+    {{/dragons}}
+</table>
+{{/edit_phase}}
 {{#edit_phase}}
-<form action="/logout" method="post">
-    <button type="submit">Logout</button>
-</form>
+<br>
+<br>
+{{#e_dragon}}
 <br>
 <br>
 
 <form action="/update-dragon" method="post">
-    <input type="text" name="dragon_name" placeholder="Dragon Name"/>
-    <select name="color" style="display: inline;">
+    <input type="hidden" name="id" value="{{id}}"/>
+    <input type="text" name="name" value="{{name}}/">
+    <select name="color" style="display: inline;" selected="{{color}}">
         <option value="red">Red</option>
         <option value="blue">Blue</option>
         <option value="green">Green</option>
@@ -75,41 +112,25 @@ Hello, {{.}}
         <option value="copper">Copper</option>
         <option value="mixture">Other</option>
     </select>
-    <select name="type" style="display: inline;">
-        <option value="leviathan">leviathan</option>
-        <option value="aquatic">aquatic</option>
-        <option value="drake">drake</option>
-        <option value="basilisk">basilisk</option>
-        <option value="fae">fae</option>
-        <option value="hydra">hydra</option>
-        <option value="wyvern">wyvern</option>
-        <option value="anthropomorph">anthropomorph</option>
-        <option value="ouroboros">Ouroboros</option>
+    <select name="type" style="display: inline;" selected="{{type}}">
+        <option value="Leviathan">Leviathan</option>
+        <option value="Aquatic">Aquatic</option>
+        <option value="Drake">Drake</option>
+        <option value="Basilisk">Basilisk</option>
+        <option value="Fae">Fae</option>
+        <option value="Hydra">Hydra</option>
+        <option value="Wyvern">Wyvern</option>
+        <option value="Anthropomorph">Anthropomorph</option>
+        <option value="Ouroboros">Ouroboros</option>
     </select>
-    <input type="datetime-local" name="birthdate" value="{{now}}"/>
-    <input type="number" name="age" placeholder="120"/>
+    <input type="datetime-local" name="birthdate" value="{{birthdate}}"/>
+    <input type="number" name="age" value="{{age}}"/>
     <button type="submit">Update Dragon</button>
 </form>
-{{/editPhase}}
-{{/username}}
+{{/e_dragon}}
+{{/edit_phase}}
 
-<ol>
-    {{#dragons}}
-    <li>
-        {{description}}{{time}}
-        {{#isOwner}}
-        {{^edit_phase}}
-        <form action="/edit-dragon" method="post" style="display: inline;">
-            <button type="submit" style="display: inline;">Edit</button>
-            </form>
-        <form action="/delete-dragon" method="post" style="display: inline;">
-            <button type="submit" style="display: inline;">Delete</button>
-        </form>
-        {{/edit_phase}}
-        {{/isOwner}}
-    </li>
-    {{/dragons}}
-</ol>
+
 
 </body>
 </html>

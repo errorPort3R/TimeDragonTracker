@@ -7,14 +7,14 @@ import java.time.LocalDateTime;
  * Created by jeffryporter on 6/24/16.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "dragons")
 
 
 public class Dragon
 {
     @Id
     @GeneratedValue
-    int id;
+    Integer id;
 
     @Column(nullable = false, unique = true)
     String name;
@@ -30,6 +30,8 @@ public class Dragon
 
     @Column(nullable = false)
     int age;
+
+    boolean isEditable = false;
 
     @ManyToOne
     User user;
@@ -117,5 +119,15 @@ public class Dragon
     public void setUser(User user)
     {
         this.user = user;
+    }
+
+    public boolean isEditable()
+    {
+        return isEditable;
+    }
+
+    public void setEditable(boolean editable)
+    {
+        isEditable = editable;
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by jeffryporter on 6/24/16.
@@ -28,15 +30,22 @@ public class DragonController // not to be confused with the Dragon Orbs
 
     private boolean editing = false;
 
+    private Iterable<Dragon> dragonList;
+    private Dragon editableDragon;
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
-    public String home(HttpSession session, Model model)
+    public String index(HttpSession session, Model model)
     {
+
         String username = (String) session.getAttribute("username");
-        model.addAttribute("dragons", dragons.findAll());
+        dragonList = dragons.findAll();
+        dragonList = validateEdit(username, dragonList);
+        model.addAttribute("dragons", dragonList);
         model.addAttribute("username", username);
         model.addAttribute("now", LocalDateTime.now());
         model.addAttribute("edit_phase", editing);
-        return "home";
+        model.addAttribute("e_dragon",editableDragon);
+        return "index";
     }
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
@@ -46,6 +55,7 @@ public class DragonController // not to be confused with the Dragon Orbs
         if (user == null)
         {
             user = new User(username, PasswordStorage.createHash(password));
+            users.save(user);
         }
         else if (!PasswordStorage.verifyPassword(password, user.getPassword()))
         {
@@ -84,11 +94,12 @@ public class DragonController // not to be confused with the Dragon Orbs
     }
 
     @RequestMapping(path = "/edit-dragon", method = RequestMethod.POST)
-    public String editDragon(HttpSession session, int id, String name, String color, String type, String birthdate, int age) throws Exception
+    public String editDragon(HttpSession session, int id) throws Exception
     {
         String username = (String) session.getAttribute("username");
         User user = users.findByName(username);
         editing = true;
+        editableDragon = dragons.findById(id);
         return "redirect:/";
     }
 
@@ -101,5 +112,23 @@ public class DragonController // not to be confused with the Dragon Orbs
         return "redirect:/";
     }
 
+    public Iterable<Dragon> validateEdit(String username, Iterable<Dragon> dragonList)
+    {
+        ArrayList<Boolean> editable =new ArrayList<>();
+        User user = users.findByName(username);
+        for (Dragon dragon : dragonList)
+        {
+
+            if (user != null && user.getId() == dragon.getUser().getId())
+            {
+                dragon.setEditable(true);
+            }
+            else
+            {
+                dragon.setEditable(false);
+            }
+        }
+        return dragonList;
+    }
 
 }
