@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Time Travelling Dragon Tracker 301.24.18</title>
 </head>
-<body>
+<body background="{{background_img}}"><div id="div1">
 {{^username}}
 <form action="/login" method="post">
     <input type="text" name="username" placeholder="Username"/>
@@ -20,6 +20,7 @@ Hello, {{.}}
     <button type="submit">Logout</button>
 </form>
 {{/username}}
+    </div>
 {{^edit_phase}}
 {{#username}}
 <br>
@@ -51,7 +52,7 @@ Hello, {{.}}
         <option value="Ouroboros">Ouroboros</option>
     </select>
     <input type="datetime-local" name="birthdate" value="{{now}}"/>
-    <input type="number" name="age" placeholder="120"/>
+    <input type="number" name="age" placeholder="Estimated Age"/>
     <button type="submit">Create Dragon</button>
 </form>
 {{/username}}

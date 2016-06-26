@@ -1,3 +1,15 @@
+body
+{
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+#div1
+{
+    text-shadow: 2px 2px white;
+}
+
 table
 {
     width:100%;
@@ -17,16 +29,16 @@ th, td
 
 table tr:nth-child(even)
 {
-    background-color: #BAE8F7;
+    background-color: #9CA7FF;
 }
 
 table tr:nth-child(odd)
 {
-   background-color:#99CDDE;
+   background-color:#CABEED;
 }
 
 table th
 {
-    background-color: #1FAEDE;
+    background-color: #7F25C4;
     color: white;
 }

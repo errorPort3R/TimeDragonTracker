@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -39,12 +40,16 @@ public class DragonController // not to be confused with the Dragon Orbs
 
         String username = (String) session.getAttribute("username");
         dragonList = dragons.findAll();
+        Collections.sort((ArrayList<Dragon>)dragonList);
         dragonList = validateEdit(username, dragonList);
+        String backgroundImage = getBackground();
+
         model.addAttribute("dragons", dragonList);
         model.addAttribute("username", username);
         model.addAttribute("now", LocalDateTime.now());
         model.addAttribute("edit_phase", editing);
         model.addAttribute("e_dragon",editableDragon);
+        model.addAttribute("background_img", backgroundImage);
         return "index";
     }
 
@@ -129,6 +134,46 @@ public class DragonController // not to be confused with the Dragon Orbs
             }
         }
         return dragonList;
+    }
+
+    public String getBackground()
+    {
+        String image;
+        int selector = (int)(Math.random()*1028)%10;
+        switch (selector)
+        {
+            case 0:
+                image = "dragon1.png";
+                break;
+            case 1:
+                image = "dragon2.png";
+                break;
+            case 2:
+                image = "dragon3.jpg";
+                break;
+            case 3:
+                image = "dragon4.png";
+                break;
+            case 4:
+                image = "dragon5.jpg";
+                break;
+            case 5:
+                image = "dragon6.jpg";
+                break;
+            case 6:
+                image = "dragon7.jpg";
+                break;
+            case 7:
+                image = "dragon8.jpg";
+                break;
+            case 8:
+                image = "dragon9.jpg";
+                break;
+            default:
+                image = "dragon10.jpg";
+                break;
+        }
+        return image;
     }
 
 }

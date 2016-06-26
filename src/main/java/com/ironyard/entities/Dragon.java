@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Table(name = "dragons")
 
 
-public class Dragon
+public class Dragon implements Comparable<Dragon>
 {
     @Id
     @GeneratedValue
@@ -129,5 +129,12 @@ public class Dragon
     public void setEditable(boolean editable)
     {
         isEditable = editable;
+    }
+
+
+    @Override
+    public int compareTo(Dragon o)
+    {
+        return this.name.compareTo(o.name);
     }
 }
