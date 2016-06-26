@@ -53,6 +53,7 @@ public class DragonController // not to be confused with the Dragon Orbs
         return "index";
     }
 
+    //ROUTES*********************************************************************************************
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(HttpSession session, String username, String password) throws Exception
     {
@@ -117,6 +118,8 @@ public class DragonController // not to be confused with the Dragon Orbs
         return "redirect:/";
     }
 
+
+    //METHODS********************************************************************************************
     public Iterable<Dragon> validateEdit(String username, Iterable<Dragon> dragonList)
     {
         ArrayList<Boolean> editable =new ArrayList<>();
